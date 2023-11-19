@@ -1,13 +1,10 @@
 import React from 'react';
 
-const Filter = ({ filter, onFilterChange }) => (
-  <input
-    type="text"
-    name="filter"
-    value={filter}
-    onChange={onFilterChange}
-    placeholder="Пошук контактів"
-  />
+const Filter = ({ filter, setFilter }) => (
+  <label>
+    Filter by name:
+    <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} />
+  </label>
 );
 
 export default Filter;

@@ -1,50 +1,38 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { nanoid } from 'nanoid';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+const ContactForm = ({ addContact, contacts }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+
+    const isDuplicate = contacts.some((contact) => contact.name.toLowerCase() === name.toLowerCase());
+
+    if (isDuplicate) {
+      alert('This contact already exists!');
+    } else {
+      addContact({ id: nanoid(), name, number });
+      setName('');
+      setNumber('');
+    }
   };
 
-  handleNameChange = (event) => {
-    this.setState({ name: event.target.value });
-  };
-
-  handleNumberChange = (event) => {
-    this.setState({ number: event.target.value });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.props.onAddContact({
-      name: this.state.name,
-      number: this.state.number
-    });
-    this.setState({ name: '', number: '' });
-  };
-  
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          required
-          value={this.state.name}
-          onChange={this.handleNameChange}
-        />
-        <input
-          type="tel"
-          name="number"
-          required
-          value={this.state.number}
-          onChange={this.handleNumberChange}
-        />
-        <button type="submit">Add Contact</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+      </label>
+      <label>
+        Number:
+        <input type="tel" name="number" value={number} onChange={(e) => setNumber(e.target.value)} required />
+      </label>
+      <button type="submit">Add Contact</button>
+    </form>
+  );
+};
 
 export default ContactForm;
